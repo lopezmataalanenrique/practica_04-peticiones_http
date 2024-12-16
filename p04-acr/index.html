@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Formulario</title>
+   <meta http-equiv="Content-Type" content="text/html;">
+</head>
+<body>
+   <form id="myForm" action="http://127.0.0.1:8000" method="GET">
+      <input type="text" name="Nombre">
+      <input type="submit" value="Enviar datos (GET)">
+   </form>
+
+   <button id="headButton">Enviar datos (HEAD)</button>
+
+   <script>
+      document.getElementById('headButton').addEventListener('click', function(event) {
+         event.preventDefault(); // Evita el envío del formulario
+         
+         const form = document.getElementById('myForm');
+         const formData = new FormData(form);
+         const queryString = new URLSearchParams(formData).toString();
+
+         fetch(form.action + '?' + queryString, {
+            method: 'HEAD',
+            headers: {
+               'Content-Type': 'application/x-www-form-urlencoded'
+            }
+         }).then(response => {
+            console.log('Solicitud HEAD enviada');
+            // Aquí puedes manejar la respuesta si es necesario
+         }).catch(error => {
+            console.error('Error:', error);
+         });
+      });
+   </script>
+</body>
+</html>
